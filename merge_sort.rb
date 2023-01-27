@@ -4,15 +4,13 @@
 require 'minitest/autorun'
 
 module MergeSort
-  def call(array)
+  def call(array, second_array = [])
+    array = array + second_array
     length = array.length
     return array if length <= 1
 
-    half = Integer(length / 2.0)
-    remainder = length % 2
-
     merge(
-      call(array.slice!(0, (half + remainder))),
+      call(array.slice!(0, (length / 2 + length % 2))),
       call(array)
     )
   end
@@ -23,7 +21,7 @@ module MergeSort
     sorted = []
     left_index = 0
     right_index = 0
-    (1..(left.size + right.size)).each do
+    (left.size + right.size).times do
       l = left[left_index]
       r = right[right_index]
 
@@ -48,7 +46,9 @@ class MergeSortTest < Minitest::Test
   # The initial, proivded scinero doesn't require a full merge-sort as the
   # provided arrays are each already sorted
   def test_sorted_arrays_of_equal_length
-    assert_equal [1, 2, 3, 4, 5, 6], MergeSort.merge([1, 2, 5], [3, 4, 6])
+    sorted = [1, 2, 3, 4, 5, 6]
+    assert_equal sorted, MergeSort.merge([1, 2, 5], [3, 4, 6])
+    assert_equal sorted, MergeSort.call([1, 2, 5], [3, 4, 6])
   end
 
   def test_sorted_arrays_of_unequal_length
