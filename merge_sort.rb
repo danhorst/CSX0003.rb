@@ -25,8 +25,17 @@ module MergeSort
       l = left[left_index]
       r = right[right_index]
 
-      sorted << l && next unless r
-      sorted << r && next unless l
+      if r.nil?
+        sorted << l
+        left_index += 1
+        next
+      end
+
+      if l.nil?
+        sorted << r
+        right_index += 1
+        next
+      end
 
       if l < r
         sorted << l
@@ -52,7 +61,9 @@ class MergeSortTest < Minitest::Test
   end
 
   def test_sorted_arrays_of_unequal_length
-    assert_equal [1, 2, 3, 4, 5, 6, 7], MergeSort.merge([1, 2, 5, 7], [3, 4, 6])
+    sorted = [1, 2, 3, 4, 5, 6, 7]
+    assert_equal sorted, MergeSort.merge([1, 2, 5, 7], [3, 4, 6])
+    assert_equal sorted, MergeSort.call([1, 2, 5, 7, 3, 4, 6])
   end
 
   # It gets more complicated with unsorted input
