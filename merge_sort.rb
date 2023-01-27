@@ -12,7 +12,7 @@ module MergeSort
     remainder = length % 2
 
     self.merge(
-      self.call(array[0, (half + remainder)]),
+      self.call(array.slice(0, (half + remainder))),
       self.call(array[(half * -1), half])
     )
   end
