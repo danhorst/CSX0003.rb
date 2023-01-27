@@ -10,21 +10,11 @@ module MergeSort
 
     half = Integer(length / 2.0)
     remainder = length % 2
-    puts "Length: #{length}"
-    puts "Half: #{half}"
-    puts "Remainder: #{remainder}"
-    #left_index = half + remainder
-    left_index = half - 1 + remainder
-    right_index = half
 
-    left = array[0..(left_index)]
-    puts "Left index: #{left_index}"
-    puts "Left: #{left}"
-    right = array[(right_index * -1), right_index]
-    puts "Right index: #{right_index}"
-    puts "Right: #{right}"
-
-    self.merge(self.call(left), self.call(right))
+    self.merge(
+      self.call(array[0, (half + remainder)]),
+      self.call(array[(half * -1), half])
+    )
   end
 
   module_function :call
