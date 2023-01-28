@@ -37,10 +37,10 @@ module MergeSort
         next
       end
 
-      if l < r
+      if l <= r
         sorted << l
         left_index += 1
-      elsif r < l
+      elsif r <= l
         sorted << r
         right_index += 1
       end
@@ -73,5 +73,9 @@ class MergeSortTest < Minitest::Test
 
   def test_unsorted_array_of_odd_length
     assert_equal [1, 2, 3, 4, 5, 6, 7], MergeSort.call([5, 1, 2, 7, 4, 3, 6])
+  end
+
+  def test_unsorted_array_of_odd_length_with_duplicates
+    assert_equal [1, 2, 3, 3, 4, 5, 6, 7, 7], MergeSort.call([3, 5, 1, 2, 4], [7, 7, 3, 6])
   end
 end
