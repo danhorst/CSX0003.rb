@@ -9,7 +9,7 @@ module MergeSort
     length = array.length
     return array if length <= 1
 
-    merge(
+    Merge.call(
       call(array.slice!(0, (length / 2 + length % 2))),
       call(array)
     )
@@ -49,6 +49,46 @@ module MergeSort
   end
 
   module_function :merge
+
+  class Merge
+    def self.call(left, right)
+      merge = new(left, right)
+      merge.sorted
+    end
+
+    def initialize(left, right)
+      @left_index, @right_index = [0, 0]
+      @sorted = []
+
+      (left.size + right.size).times do
+        @l = left[left_index]
+        @r = right[right_index]
+
+        add_left  && next if @r.nil?
+        add_right && next if @l.nil?
+
+        add_left  && next if l <= r
+        add_right         if r < l
+      end
+    end
+
+    attr_reader :sorted
+
+    private
+
+    def add_left
+      @sorted << l
+      @left_index += 1
+    end
+
+    def add_right
+      @sorted << r
+      @right_index += 1
+    end
+
+    attr_accessor :l, :left_index, :r, :right_index
+  end
+
 end
 
 class MergeSortTest < Minitest::Test
@@ -57,12 +97,14 @@ class MergeSortTest < Minitest::Test
   def test_sorted_arrays_of_equal_length
     sorted = [1, 2, 3, 4, 5, 6]
     assert_equal sorted, MergeSort.merge([1, 2, 5], [3, 4, 6])
+    assert_equal sorted, MergeSort::Merge.call([1, 2, 5], [3, 4, 6])
     assert_equal sorted, MergeSort.call([1, 2, 5], [3, 4, 6])
   end
 
   def test_sorted_arrays_of_unequal_length
     sorted = [1, 2, 3, 4, 5, 6, 7]
     assert_equal sorted, MergeSort.merge([1, 2, 5, 7], [3, 4, 6])
+    assert_equal sorted, MergeSort::Merge.call([1, 2, 5, 7], [3, 4, 6])
     assert_equal sorted, MergeSort.call([1, 2, 5, 7, 3, 4, 6])
   end
 
